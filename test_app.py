@@ -13,3 +13,7 @@ class TestApp:
         res = client.get('/')
         assert res.status_code == 200
         assert res.json == {}
+
+    def test_empty_entry(self, client):
+        res = client.post('/', data={})
+        assert res.status_code == 422
