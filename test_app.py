@@ -29,3 +29,17 @@ class TestApp:
             data = json.load(json_file)
             res = client.post('/', json=dict(data), headers=headers)
             assert res.status_code == 422
+
+
+    def test_single_experience_no_interval(self, client):
+        mimetype = 'application/json'
+        headers = {
+            'Content-Type': mimetype,
+            'Accept': mimetype
+        }
+        with open('examples/freelancer_experience_single_no_interval.json') as json_file:
+            data = json.load(json_file)
+            res = client.post('/', json=dict(data), headers=headers)
+            assert res.status_code == 200
+
+    # testar se existe skillName
