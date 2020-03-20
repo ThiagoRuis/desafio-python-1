@@ -37,9 +37,10 @@ class TestApp:
             'Content-Type': mimetype,
             'Accept': mimetype
         }
-        with open('examples/freelancer_experience_single_no_interval.json') as json_file:
-            data = json.load(json_file)
+        with open('examples/freelancer_experience_single_no_interval.json') as json_request:
+            data = json.load(json_request)
             res = client.post('/', json=dict(data), headers=headers)
             assert res.status_code == 200
-
+            with open('examples/freelancer_experience_single_no_interval_response.json') as json_response:
+                assert res.json == json_response
     # testar se existe skillName

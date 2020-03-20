@@ -25,7 +25,13 @@ def create_app():
                 skillset.setdefault(skillname, []).append(period)
 
         computed_skills = compute_skills(skillset)
-        
+        evaluation = {
+            "freelance": {
+                "id": data['freelance']['id'],
+                "computedSkills": computed_skills
+            }
+        }
+        return jsonify(evaluation)
 
     @app.route('/', methods=['GET'])
     def main():
