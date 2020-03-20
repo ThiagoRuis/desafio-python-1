@@ -1,15 +1,12 @@
 from flask import Flask, jsonify, request, Response
+from flask_restplus import Resource, Api
 from datetime import datetime
 
-def create_app():
-    app = Flask(__name__)
+app = Flask(__name__)
+api = Api(app)
 
-    @app.route('/ping')
-    def ping():
-        return jsonify(ping='pong')
-
-    @app.route('/', methods=['POST'])
-    def freelancer_evaluate():
+class Evaluation(Resource):
+    def post(self):
         data = request.json
         code = validate(data)
         if not code is None:
@@ -33,10 +30,6 @@ def create_app():
         }
         return jsonify(evaluation)
 
-    @app.route('/', methods=['GET'])
-    def main():
-        return jsonify()
-
     def validate(request_body):
         wrong_format_code = 422
         if request_body is None or request_body == '' or request_body == {}:
@@ -58,7 +51,6 @@ def create_app():
 
         pass
 
-    #todo: REFATORE !!!
     def compute_skills(skillset):
         computed_skills = []
         for skill in skillset:
@@ -75,7 +67,6 @@ def create_app():
             
         return computed_skills
 
-    #todo: REFATORE !!!
     def compute_time(start_date, end_date, buffer):
         start = datetime.strptime(start_date, "%Y-%m-%d")
         end = datetime.strptime(end_date, "%Y-%m-%d")
@@ -85,14 +76,6 @@ def create_app():
             start = datetime(start.year + int(start.month / 12), (start.month % 12) + 1, 1)
         return buffer
 
-    return app
-
-
-
-
-        
-
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(port=5000)
+    app.run(debug=True, port=5000)
