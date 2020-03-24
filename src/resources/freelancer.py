@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request, Response
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource, fields, ValidationError
 from datetime import datetime
 
-from models.freelance import freelance
+from models import freelance
 from server.instance import server
 
 app, api = server.app, server.api
@@ -16,7 +16,7 @@ class FreelancerList(Resource):
             computed_time = {}
             id, name = skill.split('-')
             for period in skillset[skill]:
-                computed_time = compute_time(start_date=period['startDate'], end_date=period['endDate'], buffer=computed_time)
+                computed_time = self.compute_time(start_date=period['startDate'], end_date=period['endDate'], buffer=computed_time)
 
             computed_skills.append({
                 "id": id,
@@ -35,9 +35,7 @@ class FreelancerList(Resource):
             start = datetime(start.year + int(start.month / 12), (start.month % 12) + 1, 1)
         return buffer
 
-    # Ask flask_restplus to validate the incoming payload
     @api.expect(freelance, validate=True)
-    @api.marshal_with(freelance)
     def post(self):
         data = request.json
         skillset = {}
@@ -50,11 +48,11 @@ class FreelancerList(Resource):
                 }
                 skillset.setdefault(skillname, []).append(period)
 
-        computed_skills = compute_skills(skillset=skillset)
+        computed_skills = self.compute_skills(skillset=skillset)
         evaluation = {
             "freelance": {
                 "id": data['freelance']['id'],
                 "computedSkills": computed_skills
             }
         }
-        return jsonify(evaluation)
+        return evaluation, 200

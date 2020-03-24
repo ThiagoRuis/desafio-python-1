@@ -27,8 +27,8 @@ class TestApp:
         }
         with open('examples/freelancer_experience_single_no_interval.json') as json_request:
             data = json.load(json_request)
-            res = client.post('/', json=dict(data), headers=headers)
+            res = client.post('/freelance', json=dict(data), headers=headers)
             assert res.status_code == 200
             with open('examples/freelancer_experience_single_no_interval_response.json') as json_response:
-                assert res.json == json_response
+                assert res.json == json.load(json_response)
     # testar se existe skillName
