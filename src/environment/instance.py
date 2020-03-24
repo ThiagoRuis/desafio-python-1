@@ -1,6 +1,6 @@
 import os
 
-# Load the development "mode". Use "developmen" if not specified
+# Load the development "mode". Use "development" if not specified
 env = os.environ.get("PYTHON_ENV", "development")
 
 # Configuration for each environment
