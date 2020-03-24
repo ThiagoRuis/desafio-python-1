@@ -1,9 +1,9 @@
-from server.instance import server
 import sys, os
+from server.instance import server
 
 # Need to import all resources
 # so that they register with the server 
-from resources.freelancer import *
+from controller import *
 
 if __name__ == '__main__':
     server.run()
