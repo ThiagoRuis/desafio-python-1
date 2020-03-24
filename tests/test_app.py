@@ -15,8 +15,8 @@ class TestApp:
         }
         with open('examples/freelancer_no_skills.json') as json_file:
             data = json.load(json_file)
-            res = client.post('/', json=dict(data), headers=headers)
-            assert res.status_code == 422
+            res = client.post('/freelance', json=dict(data), headers=headers)
+            assert res.status_code == 400
 
 
     def test_single_experience_no_interval(self, client):
@@ -31,4 +31,17 @@ class TestApp:
             assert res.status_code == 200
             with open('examples/freelancer_experience_single_no_interval_response.json') as json_response:
                 assert res.json == json.load(json_response)
-    # testar se existe skillName
+    
+    def test_full_example(self, client):
+        mimetype = 'application/json'
+        headers = {
+            'Content-Type': mimetype,
+            'Accept': mimetype
+        }
+        with open('examples/freelancer.json') as json_request:
+            data = json.load(json_request)
+            res = client.post('/freelance', json=dict(data), headers=headers)
+            assert res.status_code == 200
+            #with open('examples/freelancer_experience_single_no_interval_response.json') as json_response:
+            #    assert res.json == json.load(json_response)
+    

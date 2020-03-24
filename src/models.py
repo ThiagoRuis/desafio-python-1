@@ -18,7 +18,7 @@ professional_experience = server.api.model('ProfessionalExperience', {
     'companyName': fields.String(required=True, min_length=1, description='Company name of the job'),
     'startDate':  fields.String(required=True, min_length=1, description='Start date of the job'),
     'endDate':  fields.String(required=True, min_length=1, description='End date of the job'),
-    'skills':  fields.List(fields.Nested(skill))    
+    'skills':  fields.List(fields.Nested(skill), required=True)    
 })
 
 job = server.api.model('Job', {
