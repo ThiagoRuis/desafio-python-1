@@ -10,6 +10,7 @@ flask = "*"
 pytest = "*"
 pytest-flask = "*"
 flask-restx = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.7"

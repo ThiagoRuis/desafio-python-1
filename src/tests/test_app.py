@@ -1,11 +1,16 @@
 import pytest, json
-from flask import url_for
-from resources.freelancer import *
+
+from controller import *
 
 class TestApp:
     def test_empty_entry(self, client):
-        res = client.post('/freelance', json={})
-        assert res.status_code == 422
+        mimetype = 'application/json'
+        headers = {
+            'Content-Type': mimetype,
+            'Accept': mimetype
+        }
+        res = client.post('/freelance', json={}, headers=headers)
+        assert res.status_code == 400
 
     def test_no_skills(self, client):
         mimetype = 'application/json'
@@ -13,7 +18,7 @@ class TestApp:
             'Content-Type': mimetype,
             'Accept': mimetype
         }
-        with open('examples/freelancer_no_skills.json') as json_file:
+        with open('../examples/freelancer_no_skills.json') as json_file:
             data = json.load(json_file)
             res = client.post('/freelance', json=dict(data), headers=headers)
             assert res.status_code == 400
@@ -25,7 +30,7 @@ class TestApp:
             'Content-Type': mimetype,
             'Accept': mimetype
         }
-        with open('examples/freelancer_experience_single_no_interval.json') as json_request:
+        with open('../examples/freelancer_experience_single_no_interval.json') as json_request:
             data = json.load(json_request)
             res = client.post('/freelance', json=dict(data), headers=headers)
             assert res.status_code == 200
@@ -44,7 +49,7 @@ class TestApp:
             'Content-Type': mimetype,
             'Accept': mimetype
         }
-        with open('examples/freelancer.json') as json_request:
+        with open('../examples/freelancer.json') as json_request:
             data = json.load(json_request)
             res = client.post('/freelance', json=dict(data), headers=headers)
             assert res.status_code == 200

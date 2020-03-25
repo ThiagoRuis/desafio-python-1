@@ -31,5 +31,5 @@ job = server.api.model('Job', {
 })
 
 freelance = server.api.model('Freelance', {
-    'freelance': fields.Nested(job)
+    'freelance': fields.Nested(job, required=True)
 })
